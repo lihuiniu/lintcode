@@ -44,46 +44,47 @@ public class Solution {
             return 0;
         }
         Queue<Cell> qq = new PriorityQueue<Cell>(1, new Comparator<Cell>(){
+            @Override 
             public int compare(Cell A, Cell B){
                 return A.h - B.h;
             }
         });
-
-        int n = heights.length;
-        int m = heights[0].length;
+        int rows = heights.length;
+        int cols = heights[0].length;
         boolean[][] visited = new boolean[n][m];
-        
-        for (int i = 0; i < n; i++){
-            visited[i][0] =true;
-            qq.offer(new Cell(i, 0, heights[i][0]));
-            visited[i][m-1] = true;
-            qq.offer(new Cell(i, m -1, heights[i][m - 1]));
-        }
-        
-        for (int i = 0; i < m; i++){
-            visited[0][i] = true;
-            qq.offer(new Cell(0, i, heights[0][i]));
-            visited[n - 1][i] = true;
-            qq.offer( new Cell(n - 1, i, heights[n - 1][i]));
-        }
 
-        int[] xs = {0, 0, 1, -1};
-        int[] ys = {1, -1, 0, 0};
-        int sum = 0;
+        for (int r = 0; r < rows; r++){
+            visited[r][0] = true;
+            qq.offer(new Cell(r, 0, heights[r][0]);
+            visited[r][cols - 1] = true;
+            qq.offer(new Cell(r, cols - 1, heights[r][cols - 1]);
+        }
         
-        while (!qq.isEmpty()){
+       for (int c = 0; c < cols; c++){
+           visited[0][c] = true;
+           qq.offer(new Cell(0, c, heights[0][c]);
+           
+           visited[rows - 1][c] = true;
+           qq.offer(new Cell(rows - 1, i, heights[rows - 1][i]);
+       }
+        
+        int[] dx = {0, 0, 1, -1};
+        int[] dy = {1, -1, 0, 0};
+
+        int sum = 0;
+        while (/1qq.isEmpty()){
             Cell cell = qq.poll();
-            for (int i = 0; i < 4; i++){
-                int nx = cell.x + xs[i];
-                int ny = cell.y + ys[i];
-                if (nx >= 0 && nx < n && ny >= 0 && ny < m && !visited[nx][ny]){
+            for (int idx = 0; idx < 4; idx++){
+                int nx = cell.x + dx[idx];
+                int ny = cell.y + dy[idx];
+                
+                if (nx >= 0 && nx <rows && ny >= 0 && ny < cols && !visited[nx][ny]){
                     visited[nx][ny] = true;
                     sum += Math.max(0, cell.h - heights[nx][ny]);
-                    qq.offer(new Cell(nx, ny, Math.max(heights[nx][ny], cell.h)));
+                    qq.offer( new Cell( nx, ny, Math.max(heights[nx][ny], cell.h) ) );
                 }
             }
         }
-        
         return sum;
     }
 }
