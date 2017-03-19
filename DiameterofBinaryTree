@@ -1,0 +1,60 @@
+543. Diameter of Binary Tree
+Given a binary tree, you need to compute the length of the diameter of the tree. The diameter of a binary tree is the length of the longest path between any two nodes in a tree. This path may or may not pass through the root.
+
+Example:
+Given a binary tree 
+          1
+         / \
+        2   3
+       / \     
+      4   5    
+Return 3, which is the length of the path [4,2,1,3] or [5,2,1,3].
+
+Note: The length of path between two nodes is represented by the number of edges between them.
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    class ResultType{
+        int root2any;
+        int any2any;
+        int longestPath;
+        public ResultType(int root2any, int any2any, int longestPath){
+            this.root2any = root2any;
+            this.any2any = any2any;
+            this.longestPath = longestPath;
+        }
+    }
+    public int diameterOfBinaryTree(TreeNode root) {
+        if (root == null){
+            return 0;
+        }
+        ResultType rt = dfs(root);
+        return rt.longestPath;
+    }
+    
+    private ResultType dfs(TreeNode root){
+        if (root == null){
+            ResultType rt = new ResultType(0, 0, 0);
+            return rt;
+        } else if (root.left == null && root.right == null){
+            ResultType rt = new ResultType(1, 1, 0);
+            return rt;
+        }
+        ResultType rtLeft = dfs(root.left);
+        ResultType rtRight = dfs(root.right);
+        int r2a = 1 + Math.max(rtLeft.root2any, rtRight.root2any);
+        int a2a = 1 + rtLeft.root2any + rtRight.root2any;
+        a2a = Math.max(a2a, Math.max(rtLeft.any2any, rtRight.any2any));
+        int longest = Math.max(rtLeft.longestPath, rtRight.longestPath);
+        longest = Math.max(longest, Math.max(r2a - 1, a2a - 1));
+        ResultType res = new ResultType(r2a, a2a, longest);
+        return res;
+    }
+}
